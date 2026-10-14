@@ -36,6 +36,12 @@ body { background: var(--comp-bg); color: var(--comp-ink); transition: backgroun
 .theme-toggle:hover, .icon-button:hover { color: var(--comp-emerald); transform: translateY(-1px); }
 
 .companion-page { width: min(1120px, calc(100% - 42px)); padding-top: 40px; }
+.consultation-page { width: min(1000px, calc(100% - 42px)); padding-top: 35px; }
+.consultation-heading { margin: 28px 0 16px; display: flex; align-items: center; gap: 14px; }
+.consultation-icon { width: 45px; height: 45px; display: grid; flex: 0 0 auto; place-items: center; border: 1px solid #d9d4ed; border-radius: 15px 15px 15px 5px; color: #746a9e; background: var(--comp-lavender); }
+.consultation-heading h1 { margin: 5px 0; color: var(--comp-ink); font-family: var(--serif); font-size: 31px; font-weight: 400; }
+.consultation-heading p { margin: 0; color: var(--comp-muted); font-size: 11px; line-height: 1.6; }
+.consultation-page .directory-panel { margin-top: 0; }
 .companion-shell { --tone: #b7addf; --tone-soft: #f0edfb; position: relative; padding-bottom: 64px; }
 .companion-shell.tone-anxiety, .companion-shell.tone-fear { --tone: #96bcb8; --tone-soft: #eaf4f1; }
 .companion-shell.tone-sadness, .companion-shell.tone-grief { --tone: #9badd2; --tone-soft: #edf0f9; }
@@ -197,6 +203,7 @@ body { background: var(--comp-bg); color: var(--comp-ink); transition: backgroun
 
 @media (max-width: 800px) {
   .companion-page { width: min(700px, calc(100% - 30px)); padding-top: 27px; }
+  .consultation-page { width: min(700px, calc(100% - 30px)); padding-top: 25px; }
   .companion-grid { grid-template-columns: minmax(0, 1fr); }
   .companion-side { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
   .wellness-summary, .reflection-button, .find-specialist-button { grid-column: 1 / -1; }
@@ -209,9 +216,15 @@ body { background: var(--comp-bg); color: var(--comp-ink); transition: backgroun
 
 @media (max-width: 520px) {
   .site-header { padding: 0 14px; }
-  .site-nav { gap: 13px; }
+  .site-nav { gap: 8px; }
+  .site-nav .nav-link:nth-child(3) { display: none; }
+  .site-nav .nav-link { font-size: 9px; }
   .theme-toggle { width: 32px; height: 32px; }
   .companion-page { width: calc(100% - 22px); padding-top: 20px; }
+  .consultation-page { width: calc(100% - 22px); padding-top: 21px; }
+  .consultation-heading { align-items: flex-start; gap: 10px; }
+  .consultation-heading h1 { font-size: 25px; }
+  .consultation-heading p { max-width: 300px; font-size: 10px; }
   .companion-shell { padding-bottom: 62px; }
   .companion-heading { margin-bottom: 14px; align-items: flex-start; }
   .companion-title-group { gap: 9px; }
