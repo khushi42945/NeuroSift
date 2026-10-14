@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mindpulse
+      POSTGRES_USER: mindpulse
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mindpulse-local-only}
+    volumes:
+      - mindpulse-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mindpulse -d mindpulse"]
+      interval: 5s
+      timeout: 4s
+      retries: 12
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+      SECRET_KEY: ${SECRET_KEY:-development-only-secret-change-before-deployment}
+      FIELD_ENCRYPTION_KEY: ${FIELD_ENCRYPTION_KEY:-}
+      DATABASE_URL: postgresql+psycopg://mindpulse:${POSTGRES_PASSWORD:-mindpulse-local-only}@db:5432/mindpulse
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      AUTO_CREATE_SCHEMA: "false"
+      HF_EMOTION_MODEL: ${HF_EMOTION_MODEL:-}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI:-http://localhost:8000/api/auth/google/callback}
+      CONVERSATION_MODEL_URL: ${CONVERSATION_MODEL_URL:-}
+      CONVERSATION_MODEL_API_KEY: ${CONVERSATION_MODEL_API_KEY:-}
+      CONVERSATION_MODEL_NAME: ${CONVERSATION_MODEL_NAME:-}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_PROXY_URL: ${API_PROXY_URL:-http://api:8000}
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  mindpulse-postgres:
